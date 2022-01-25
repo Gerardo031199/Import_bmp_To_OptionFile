@@ -9,20 +9,18 @@ class FLAG:
         self.convertData()
         
     def convertPalette(self): #convierte la paleta, invierte 80 por FF      
-        d = self.palette
 
-        for i in range(3,len(d),4): #Solo toma los bytes de transparencia
-            value = d[i]*2
+        for i in range(3,len(self.palette),4): #Solo toma los bytes de transparencia
+            value = self.palette[i]*2
             if value >= 256: #Si el valor es mayor o igual a 256 se resta 1 al valor
                 value = value-1
             elif value <= 0: #Si no el valor es menor o igual al 0 se queda en 0
                 value = 0
-            d[i] = value
+            self.palette[i] = value
 
         if self.bpp >= 8: #Si la profundidad de bits es mayor o igual a 8 bpp se convierte de BGRA -> RGBA
-            d[::4], d[2::4] = d[2::4], d[::4] #BGRA -> RGBA
+            self.palette[::4], self.palette[2::4] = self.palette[2::4], self.palette[::4] #BGRA -> RGBA
 
-        self.palette = d
 
     def convertData(self):
         data_1 = self.data[::-1]
@@ -41,8 +39,6 @@ def main():
 
         width= int.from_bytes(content[18:21], byteorder='little', signed=False)
         height= int.from_bytes(content[22:25], byteorder='little', signed=False)
-
-        #print(width,height)
 
         bpp = content[28]#Profundidad de bits
 
