@@ -23,11 +23,9 @@ class FLAG:
 
 
     def convertData(self):
-        data_1 = self.data[::-1]
-        
         data_2 = b''
-        for i in range(0,len(data_1),64): #Iteraciones cada 64 bytes
-            data_2 +=(data_1[i:i+64][::-1]) #Bytes en reversa
+        for i in range(0,len(self.data),64): #Iteraciones cada 64 bytes
+            data_2 +=(self.data[i:i+64][::-1]) #Bytes en reversa
             
         self.data = data_2
 
@@ -49,7 +47,7 @@ def main():
         data_offset = int.from_bytes(content[10:12], byteorder='little', signed=False)
         data_size = int.from_bytes(content[34:36], byteorder='little', signed=False)
 
-        data = content[data_offset:data_offset+data_size]
+        data = content[data_offset:data_offset+data_size][::-1]
         
         my_flag = FLAG(bpp, palette, data,)
         with open('Escudo.bin','w+b') as escudo:
